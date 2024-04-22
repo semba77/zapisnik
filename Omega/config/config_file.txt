@@ -1,0 +1,3 @@
+{"server" : "PC000",
+ "user" : "sa",
+ "password" : "student"}

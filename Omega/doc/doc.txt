@@ -1,0 +1,89 @@
+class Facade
+    
+    Třída Facade slouží k interakci s databází pomocí ODBC Driveru pro SQL Server.
+
+    Attributes
+        conn Objekt připojení k databázi.
+        cursor Kurzor používaný k provádění SQL dotazů.
+
+    Methods
+        __init__ Inicializuje instanci třídy a vytvoří připojení k databázi.
+        find_all_tasks Vrací všechny úkoly z databáze.
+        notebook Metoda pro záznam poznámek, aktuálně není implementována.
+        find_everything_for_date Vrací všechny události pro zadané datum.
+        add_event Přidá novou událost do databáze.
+    
+
+    def __init__(self, server, user, password)
+        
+        Inicializuje instanci třídy a vytvoří připojení k databázi.
+
+        Args
+            server Řetězec obsahující název serveru SQL Serveru.
+            user Řetězec obsahující uživatelské jméno pro přihlášení k databázi.
+            password Řetězec obsahující heslo pro přihlášení k databázi.
+        
+        self.conn = pyodbc.connect(DRIVER={ODBC Driver 17 for SQL Server};SERVER=+server+;DATABASE=Omega;UID=+user+;PWD=+password)
+        self.cursor = self.conn.cursor()
+
+    def find_all_tasks(self)
+        
+        Vrací všechny úkoly z databáze.
+
+        Returns
+            Seznam tuplů obsahujících údaje o úkolech (popis, datum_cas, id_typu).
+
+        Raises
+            Exception Pokud dojde k chybě při provádění SQL dotazu.
+        
+        try
+            self.cursor.execute(
+            SELECT udalost., typ_udalosti.typ_udalosti FROM udalost INNER JOIN typ_udalosti 
+            ON udalost.id_typu = typ_udalosti.id_typu WHERE typ_udalosti.typ_udalosti = 'ukol' ORDER BY udalost.datum_cas)
+
+            return self.cursor.fetchall()
+        except Exception as e
+            print(exeption ocured when reading from database, e)
+
+    def notebook(self)
+        
+        Metoda pro záznam poznámek, aktuálně není implementována.
+        
+        pass
+
+    def find_everything_for_date(self, datum)
+        
+        Vrací všechny události pro zadané datum.
+
+        Args
+            datum Řetězec obsahující datum ve formátu 'YYYY-MM-DD'.
+
+        Returns
+            Seznam tuplů obsahujících údaje o událostech pro zadané datum (popis, datum_cas, id_typu).
+
+        Raises
+            Exception Pokud dojde k chybě při provádění SQL dotazu.
+        
+        try
+            self.cursor.execute(fSELECT  FROM udalost WHERE CAST(datum_cas AS DATE) = '{datum}'  ORDER BY datum_cas)
+
+            return self.cursor.fetchall()
+        except Exception as e
+            print(exeption ocured when reading from database, e)
+
+    def add_event(self, popis, datum, id_typu)
+        
+        Přidá novou událost do databáze.
+
+        argumenty
+            popis Řetězec obsahující popis události.
+            datum Řetězec obsahující datum a čas události ve formátu 'YYYY-MM-DD HHMMSS'.
+            id_typu Celé číslo představující ID typu události v databázi.
+
+        Raises
+            Exception Pokud dojde k chybě při provádění SQL dotazu.
+        
+        try
+            self.cursor.execute(fINSERT INTO udalost (popis, datum_cas, id_typu) VALUES ('{popis}', '{datum}', {id_typu}))
+        except Exception as e
+            print(exeption ocured when reading from database, e)

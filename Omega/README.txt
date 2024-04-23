@@ -1,4 +1,4 @@
-"skolni" : "False", nebo "True" (jesli se přihlašujete přes autentizaci nechte false, a viplňte pouze host.)
+"skolni" : "False", nebo "True" (jesli se nepřihlašujete přes autentizaci nechte false, a viplňte pouze host.)
 "server" : "PC000",
 "host" : "LAPTOP-4E70P610\SQLEXPRESS",
  "user" : "sa",

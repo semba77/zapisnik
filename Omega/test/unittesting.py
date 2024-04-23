@@ -1,29 +1,41 @@
 import unittest
-from unittest.mock import Mock
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from src.facade import Facade
-import src.change_UI4F
+import pyodbc
+import datetime
 
 class TestFacade(unittest.TestCase):
 
     def setUp(self):
-        self.mock_conn = Mock()
-        self.mock_cursor = Mock()
-        self.mock_conn.cursor.return_value = self.mock_cursor
-        self.facade = Facade(host="LAPTOP-4E70P610\SQLEXPRESS", database="Omega")
-        self.facade.conn = self.mock_conn
-
+        self.conn = pyodbc.connect("DRIVER={{SQL Server}};SERVER={};DATABASE=Omega_test;Trusted_Connection=yes;".format("LAPTOP-4E70P610\SQLEXPRESS"))
+        self.cursor = self.conn.cursor()
+        self.fasade = Facade(self.conn)
     def test_find_all_tasks(self):
+        results = list(self.fasade.find_all_tasks())
+        self.assertEqual(type(results), list)
+        for result in results:
+            self.assertEqual(tuple(result),tuple)
+            self.assertEqual(len(result),5)
 
-        expected_result = [('task1', '2024-04-21 09:00:00'), ('task2', '2024-04-22 10:00:00')]
-        self.mock_cursor.fetchall.return_value = expected_result
+            self.assertEqual(type(result[0]),int)
+            self.assertEqual(type(result[1]),str)
+            self.assertEqual(type(result[2]),datetime.datetime)
+            self.assertEqual(type(result[3]),int)
+            self.assertEqual(type(result[4]),str)
 
-        result = self.facade.find_all_tasks()
+    def test_add_event(self, popis, date_time, typ):
+        try:
+            self.cursor.execute(f"INSERT INTO udalost (popis, datum_cas, id_typu) VALUES ('{popis}', '{date_time}', {typ})")
+            self.fasade.conn.commit()
 
-        self.mock_cursor.execute.assert_called_once_with(
-            "SELECT udalost.*, typ_udalosti.typ_udalosti FROM udalost INNER JOIN typ_udalosti "
-            "ON udalost.id_typu = typ_udalosti.id_typu WHERE typ_udalosti.typ_udalosti = 'ukol' ORDER BY udalost.datum_cas")
+            self.cursor.execute(f"SELECT * FROM udalost WHERE popis = '{popis}'")
+            inserted_row = self.cursor.fetchone()
+            self.assertIsNotNone(inserted_row)
 
-        self.assertEqual(result, expected_result)
+        except pyodbc.Error as e:
+            self.fail("Chyba při vkládání do databáze: " + str(e))
 
 
 

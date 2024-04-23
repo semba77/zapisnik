@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 def change_ui3I(instance, MainWindow):
     if instance.type_of_window != 3:
         instance.centralwidget.deleteLater()
@@ -55,6 +56,11 @@ def change_ui3I(instance, MainWindow):
         instance.pushButton_10 = QtWidgets.QPushButton(instance.centralwidget)
         instance.pushButton_10.setGeometry(QtCore.QRect(180, 440, 931, 51))
         instance.pushButton_10.setObjectName("pushButton_10")
+
+        instance.pushButton_11 = QtWidgets.QPushButton(instance.centralwidget)
+        instance.pushButton_11.setGeometry(QtCore.QRect(30, 270, 120, 21))
+        instance.pushButton_11.setObjectName("pushButton_11")
+        instance.pushButton_11.clicked.connect(lambda: print(instance.sentence))
 
         MainWindow.setCentralWidget(instance.centralwidget)
         instance.retranslateUi(MainWindow)

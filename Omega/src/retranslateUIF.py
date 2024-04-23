@@ -17,6 +17,7 @@ dec = 31
 months = [jan, fab, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
 def retranslate(instance,MainWindow):
     instance.tasks = extansions.facade.find_all_tasks()
+    instance.sentence = extansions.sentence.get_random_sentence()
     actual_date = datetime.datetime.now()
     actual_month = actual_date.month
     cur = 0
@@ -29,28 +30,38 @@ def retranslate(instance,MainWindow):
         instance.pushButton_2.setText(_translate("MainWindow", "kalendář"))
         instance.pushButton_3.setText(_translate("MainWindow", "to do"))
     else:
-        date_tasks = extansions.facade.find_everything_for_date(f'{datetime.datetime.now().year}-0{datetime.datetime.now().month}-{instance.chosen_date}')
-        date_tasks = list(map(list, zip(*date_tasks)))
-        print(date_tasks)
+        if actual_month < 10:
+
+            month = "0"+str(actual_month)
+        else:
+            month = actual_month
+        instance.date_tasks = extansions.facade.find_everything_for_date(f'{datetime.datetime.now().year}-{month}-{instance.chosen_date}')
+        instance.date_tasks = list(map(list, zip(*instance.date_tasks)))
+        print(instance.date_tasks, "date_task")
         instance.pushButton.setText(_translate("MainWindow", "zpět"))
-        instance.pushButton_2.setText(_translate("MainWindow", "další"))
-        instance.pushButton_3.setText(_translate("MainWindow", "nový úkol"))
-        #instance.pushButton_4.setText(_translate("MainWindow", "x"))
-        #instance.pushButton_5.setText(_translate("MainWindow", "x"))
-        #instance.pushButton_6.setText(_translate("MainWindow", "x"))
-        #instance.pushButton_7.setText(_translate("MainWindow", "x"))
-        if len(date_tasks[0]) >= 1:
-            instance.label.setText(_translate("MainWindow", f"{date_tasks[1][0]}"))
-            instance.label_2.setText(_translate("MainWindow", f"{date_tasks[2][0]}"))
-        if len(date_tasks[0]) >= 2:
-            instance.label_3.setText(_translate("MainWindow", f"{date_tasks[1][1]}"))
-            instance.label_4.setText(_translate("MainWindow", f"{date_tasks[2][1]}"))
-        if len(date_tasks[0]) >= 3:
-            instance.label_5.setText(_translate("MainWindow", f"{date_tasks[1][2]}"))
-            instance.label_6.setText(_translate("MainWindow", f"{date_tasks[2][2]}"))
-        if len(date_tasks[0]) >= 4:
-            instance.label_7.setText(_translate("MainWindow", f"{date_tasks[1][3]}"))
-            instance.label_8.setText(_translate("MainWindow", f"{date_tasks[2][3]}"))
+        #instance.pushButton_2.setText(_translate("MainWindow", "další"))
+        #instance.pushButton_3.setText(_translate("MainWindow", "nový úkol"))
+        if len(instance.date_tasks[0]) >= 1:
+            instance.pushButton_4.setText(_translate("MainWindow", "x"))
+        if len(instance.date_tasks[0]) >= 2:
+            instance.pushButton_5.setText(_translate("MainWindow", "x"))
+        if len(instance.date_tasks[0]) >= 3:
+            instance.pushButton_6.setText(_translate("MainWindow", "x"))
+        if len(instance.date_tasks[0]) >= 4:
+            instance.pushButton_7.setText(_translate("MainWindow", "x"))
+
+        if len(instance.date_tasks[0]) >= 1:
+            instance.label.setText(_translate("MainWindow", f"{instance.date_tasks[1][0]}"))
+            instance.label_2.setText(_translate("MainWindow", f"{instance.date_tasks[2][0]}"))
+        if len(instance.date_tasks[0]) >= 2:
+            instance.label_3.setText(_translate("MainWindow", f"{instance.date_tasks[1][1]}"))
+            instance.label_4.setText(_translate("MainWindow", f"{instance.date_tasks[2][1]}"))
+        if len(instance.date_tasks[0]) >= 3:
+            instance.label_5.setText(_translate("MainWindow", f"{instance.date_tasks[1][2]}"))
+            instance.label_6.setText(_translate("MainWindow", f"{instance.date_tasks[2][2]}"))
+        if len(instance.date_tasks[0]) >= 4:
+            instance.label_7.setText(_translate("MainWindow", f"{instance.date_tasks[1][3]}"))
+            instance.label_8.setText(_translate("MainWindow", f"{instance.date_tasks[2][3]}"))
 
     if instance.type_of_window == 1:
         instance.save_Button.setText(_translate("MainWindow", "save event"))
@@ -131,6 +142,7 @@ def retranslate(instance,MainWindow):
             instance.pushButton_8.setText(_translate("MainWindow", f"{instance.tasks[4]}"))
         if len(instance.tasks) >= 6:
             instance.pushButton_9.setText(_translate("MainWindow", f"{instance.tasks[5]}"))
+        instance.pushButton_11.setText(_translate("MainWindow","sentence of the day"))
     instance.menunastaven.setTitle(_translate("MainWindow", "nastavení"))
     instance.actionsv_tl.setText(_translate("MainWindow", "světlý"))
     instance.actiontmav.setText(_translate("MainWindow", "tmavý"))

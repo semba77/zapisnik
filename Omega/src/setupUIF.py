@@ -32,8 +32,7 @@ def setup(instance,MainWindow):
     instance.save_Button = QtWidgets.QPushButton(instance.centralwidget)
     instance.save_Button.setGeometry(QtCore.QRect(30, 270, 75, 23))
     instance.save_Button.setObjectName("save_Button")
-
-    instance.save_Button.clicked.connect(lambda: instance.save_event(MainWindow))
+    instance.save_Button.clicked.connect(lambda: instance.save_event(instance.textEdit.toPlainText()))
 
     MainWindow.setCentralWidget(instance.centralwidget)
     instance.menubar = QtWidgets.QMenuBar(MainWindow)

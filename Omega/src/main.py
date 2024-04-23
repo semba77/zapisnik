@@ -7,6 +7,8 @@ import changeUI1F
 import change_UI2F
 import change_UI3F
 import change_UI4F
+import extansions
+import facade
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -41,8 +43,27 @@ class Ui_MainWindow(object):
     def change_ui4(self, MainWindow, date):
         change_UI4F.change_ui4I(self, MainWindow, date)
 
-    def save_event(self, MainWindow):
-        pass
+    def save_event(self, text):
+        if text == "getname":
+            extansions.true_name.get_random_name()
+        if text == "funfact":
+            extansions.facts.get_random_funfact()
+        if text == "animal":
+            extansions.animal.get_random_animal()
+        if text == "city":
+            extansions.city.cities()
+        if text == "country":
+            extansions.country.get_random_state()
+        if text == "river":
+            extansions.river.get_random_river()
+        print(text)
+        pattern = r'\{([^}]+)\}'
+        matches = re.findall(pattern, text)
+        for match in matches:
+            extansions.facade.notebook(match)
+
+    def del_event(self,event):
+        extansions.facade.del_event(event)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
